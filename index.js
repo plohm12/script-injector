@@ -1,53 +1,49 @@
 (function () {
     'use strict';
 
-    var CONTAINER_ID = 'script-injector-container';
-    var _document = document;
-    var _createElement = 'createElement';
-    var _createTextNode = 'createTextNode';
-    var _appendChild = 'appendChild';
-    var _addEventListener = 'addEventListener';
+    var CONTAINER_ID = 'plohm12-script-injector-container';
+    var FILE_INPUT_ID = 'plohm12-script-injector-file';
 
     function injectScript() {
-        var fileInput = _document.getElementById('my-script');
+        var fileInput = document.getElementById(FILE_INPUT_ID);
         if (!fileInput || !fileInput.files || !fileInput.files.length) {
             return;
         }
         var file = fileInput.files[0];
-        var script = _document[_createElement]('script');
+        var script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = URL.createObjectURL(file);
-        _document.body[_appendChild](script);
+        document.body.appendChild(script);
         close();
     }
 
     function close() {
-        var container = _document.getElementById(CONTAINER_ID);
+        var container = document.getElementById(CONTAINER_ID);
         if (container) {
             container.remove();
         }
     }
 
-    var container = _document[_createElement]('div');
+    var container = document.createElement('div');
     container.id = CONTAINER_ID;
     container.style = [
         'position:fixed',
         'top:0',
         'left:0',
         'background-color:#ddd',
-        'z-index:9999'
+        'z-index:999999999'
     ].join(';');
-    var input = _document[_createElement]('input');
+    var input = document.createElement('input');
     input.type = 'file';
-    input.id = 'my-script';
-    container[_appendChild](input);
-    var injectButton = _document[_createElement]('button');
-    injectButton[_addEventListener]('click', injectScript);
-    injectButton[_appendChild](_document[_createTextNode]('inject'));
-    container[_appendChild](injectButton);
-    var closeButton = _document[_createElement]('button');
-    closeButton[_appendChild](_document[_createTextNode]('X'));
-    closeButton[_addEventListener]('click', close);
-    container[_appendChild](closeButton);
-    _document.body[_appendChild](container);
+    input.id = FILE_INPUT_ID;
+    container.appendChild(input);
+    var injectButton = document.createElement('button');
+    injectButton.addEventListener('click', injectScript);
+    injectButton.appendChild(document.createTextNode('inject'));
+    container.appendChild(injectButton);
+    var closeButton = document.createElement('button');
+    closeButton.appendChild(document.createTextNode('X'));
+    closeButton.addEventListener('click', close);
+    container.appendChild(closeButton);
+    document.body.appendChild(container);
 }());
